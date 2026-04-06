@@ -22,7 +22,7 @@
         <canvas id="globeModel"></canvas>
         <script type = "module" src = "3dhome.js"></script>
         <script>
-            fetch('navBar.html')
+            fetch('./navBar.html')
             .then(res => res.text())
             .then(text => {
                 document.getElementById('navBar').innerHTML = text;
