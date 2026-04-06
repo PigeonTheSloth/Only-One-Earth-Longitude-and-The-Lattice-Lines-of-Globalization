@@ -14,7 +14,12 @@ THREE ELEMENTS NEEDED:
 const w = window.innerWidth;
 const h = window.innerHeight;
 
-const renderer = new THREE.WebGLRenderer({ antialias:true});
+const canvas = document.getElementById('globeModel');
+
+const renderer = new THREE.WebGLRenderer({ 
+    canvas: canvas,
+    antialias:true
+});
 
 renderer.setSize(w,h);
 
@@ -23,7 +28,7 @@ renderer.setSize(w,h);
 html and reference it in the js, but apparently this way 
 is better/easier*/
 
-document.body.appendChild(renderer.domElement);
+//document.body.appendChild(renderer.domElement);
 
 //SCENE
 
