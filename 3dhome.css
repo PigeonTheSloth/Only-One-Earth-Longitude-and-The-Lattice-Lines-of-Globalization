@@ -1,31 +1,58 @@
-#navBar > header {
+
+/*NAVBAR CSS*/
+
+
+#globeModel {
+    z-index:1;
+    position: absolute;
+    left: 0;
+    width: 100vw;
+}
+
+#navBar header {
+    z-index: 10;
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     height: 48px;
     overflow: hidden;
 
-    background-color:aquamarine;
+    background-color:rgb(51, 58, 136);
     color: white;
-
-    box-shadow: 0 2px 4px #888888;
 
     display: flex;
 
 }
 
-.logo-image {
-    width: 20px;
-    height:20px;
+#navBar a {
+    text-decoration: none;
+    color: white;
 }
 
-.nav {
+#navBar .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#navBar .logo-image {
+    width: 20px;
+    height:20px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navBar .nav {
     margin:0;
     padding:0;
     font-weight:bold;
 }
 
-.nav > ul {
+#navBar .nav > ul {
     margin: 0;
     padding: 0;
     line-height:48px;
@@ -33,14 +60,38 @@
     list-style-type:none;
 }
 
-.nav > ul > li {
+#navBar .nav > ul > li {
     padding: 0 1em;
     display: inline-block;
 }
 
-.nav > ul > li:hover {
+#navBar .nav > ul > li:hover {
     background-color: #1763ff;
 }
-.space{
+#navBar .space{
     flex-grow:1;
+}
+
+/*POPUP css*/
+
+#popup div {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    right:10%;
+    bottom:10%;
+    width: 80%;
+    height: 80%;
+    padding:5px;
+    display: flex;
+    background-color: white;
+    z-index: 13;
+}
+
+#popupButton {
+    z-index:12;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+
 }

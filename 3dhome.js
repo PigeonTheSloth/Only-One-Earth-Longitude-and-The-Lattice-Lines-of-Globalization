@@ -23,13 +23,6 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setSize(w,h);
 
-//canvas element
-/* you can also make a canvas element in your
-html and reference it in the js, but apparently this way 
-is better/easier*/
-
-//document.body.appendChild(renderer.domElement);
-
 //SCENE
 
 const scene = new THREE.Scene();
@@ -77,22 +70,10 @@ loader.load(
     scene.add(model);
 }
 );
-// URL of the model file
-
-       
-    
-
-// );
-
-// //TEST CUBE
-// // const geo = new THREE.BoxGeometry();
-// // const mat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-// // const cube = new THREE.Mesh(geo, mat);
-// // scene.add(cube);
 
 
 
-// //Animation
+//Animation
 
     function animate (t=0) {
         requestAnimationFrame(animate);
@@ -101,4 +82,3 @@ loader.load(
     }
     animate();
 
-//CHAT GPT CODE:

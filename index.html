@@ -17,17 +17,18 @@
     </head>
     <body>
 
-        <div id = "navBar"></div>
-
+        <!-- navbar -->
+        <div id = "navBar"></div> 
+         <!--globe three.js model -->
         <canvas id="globeModel"></canvas>
+         <!--example popup button (temp) -->
+        <div id = "popupButton"> myButton</div>
+        <div id = "popup"> </div>
+
+        
         <script type = "module" src = "3dhome.js"></script>
-        <script>
-            fetch('./navBar.html')
-            .then(res => res.text())
-            .then(text => {
-                document.getElementById('navBar').innerHTML = text;
-            });
-        </script>
+        <script src = "navBar.js"> </script>
+        <script src = "popup.js"> </script>
     </body>
 
 </html>
