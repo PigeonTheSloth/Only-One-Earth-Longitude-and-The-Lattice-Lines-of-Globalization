@@ -1,6 +1,11 @@
 
 /*NAVBAR CSS*/
 
+body {
+    margin: 0;
+    padding: 0;
+    font-family:arial;
+}
 
 #globeModel {
     z-index:1;
@@ -86,8 +91,13 @@
     display: flex;
     background-color: white;
     z-index: 13;
+
 }
 
+#popup img {
+    
+    margin-left: auto;
+}
 #popupButton {
     z-index:12;
     background-color: white;
@@ -95,3 +105,92 @@
     bottom: 0;
 
 }
+
+#popup img {
+    width: 20px;
+    height: 20px;
+}
+
+#conical {
+    z-index:12;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    left: 200px;
+
+}
+
+#cylindrical {
+    z-index:12;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    left: 400px;
+
+}
+
+#none {
+    z-index:12;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 600px;
+    z-index: 100;
+
+}
+
+
+
+
+#cylExp {
+    font-family:arial;
+    background-color: white;
+    position: absolute;
+    left:60%;
+    top: 15%;
+    width:350px;
+    height:450px;
+    z-index:200;
+    padding:20px;
+    border-radius:5px;
+  
+    
+}
+
+
+#conicalExp {
+    font-family:arial;
+    background-color: white;
+    position: absolute;
+    left:60%;
+    top: 15%;
+    width:350px;
+    height:450px;
+    z-index:200;
+    padding:20px;
+    border-radius:5px;
+   
+}
+
+figure {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#conProjImg{
+   width: 250px;
+
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cylProjImg {
+    width:170px;
+
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
