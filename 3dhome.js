@@ -36,7 +36,7 @@ const far = 100; //anything further than ten units wont be rendered
 
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 
-camera.position.z = 0.2; //set the camera a little further away
+camera.position.z = 0.25; //set the camera a little further away
 
 
 
@@ -108,7 +108,7 @@ const lineCyl = new THREE.LineBasicMaterial( {
 const cylinder = new THREE.LineSegments(cylinderEdge, lineCyl);
 
 
-cylinder.visible = true;
+cylinder.visible = false;
 scene.add(cylinder);
 
 
@@ -135,7 +135,7 @@ const boulder = new THREE.Mesh(boulderGeom, boulderMat);
 scene.add(boulder);
 boulder.position.set(-0.0641112,0.0540155,0.0052994);
 
-//east timor
+//houston
 const timorGeom = new THREE.SphereGeometry(0.001,10,10);
 const timorMat = new THREE.MeshBasicMaterial({color: 0xffffff});
 
@@ -143,22 +143,25 @@ const timor = new THREE.Mesh(timorGeom, timorMat);
 scene.add(timor);
 timor.position.set(-0.0705571,0.041695,0.0184181);
 
-
+//newyork
 const newyGeom = new THREE.SphereGeometry(0.001,10,10);
-const newyMat = new THREE.MeshBasicMaterial({color: 0xffffff});
+const newyMat = new THREE.MeshBasicMaterial({color: 0xff0000});
 
 const newy = new THREE.Mesh(newyGeom, newyMat);
 scene.add(newy);
 newy.position.set(-0.0515149,0.0547905,0.0374195);
 
-
+//mcdonald island
 const mcdonaldGeom = new THREE.SphereGeometry(0.001,10,10);
-const mcdonaldMat = new THREE.MeshBasicMaterial({color: 0xffffff});
+const mcdonaldMat = new THREE.MeshBasicMaterial({color: 0xff0000});
 
 const mcdonald = new THREE.Mesh(mcdonaldGeom, mcdonaldMat);
 scene.add(mcdonald);
 mcdonald.position.set(0.0503623,-0.0671575,-0.003084);
 
+// const redGroup = new THREE.Group();
+// redGroup.add(mcdonald);
+// redGroup.add(newy);
 
 
 
@@ -272,7 +275,7 @@ noneButton.addEventListener('click', () => {
    
 camera.clearViewOffset()
 
-camera.position.z = 0.2;
+camera.position.z = 0.25;
 camera.position.y = 0;
 
     cylinder.visible = false;
@@ -285,3 +288,27 @@ camera.position.y = 0;
 
 }
 );
+
+
+//project showing hiding
+const project1 = document.getElementById("project1");
+const project2 = document.getElementById("project1");
+const project3 = document.getElementById("project1");
+const project4 = document.getElementById("project1");
+const project5 = document.getElementById("project1");
+const project6 = document.getElementById("project1");
+
+document.getElementById('project1').addEventListener('click', () => {
+
+    newy.visible = true;
+    mcdonald.visible = true;
+    
+        
+        });
+
+document.getElementById('project2').addEventListener('click', () => {
+
+    newy.visible = false;
+    mcdonald.visible = false;
+        
+        });

@@ -2,6 +2,11 @@
 const cylExp = document.getElementById('cylExp');
 const conicalExp = document.getElementById('conicalExp');
 
+const openTitle = document.getElementById('openTitle');
+const openTitleSub =  document.getElementById('openTitleSub');
+
+conicalExp.style.display = "none";
+
 //popup test
 document.getElementById('popupButton').addEventListener('click', () => {
 
@@ -14,6 +19,7 @@ document.getElementById('popupButton').addEventListener('click', () => {
 
 
 })
+
 
 document.getElementById('popup').addEventListener('click', function(event) {
 
@@ -33,6 +39,9 @@ document.getElementById('cylindrical').addEventListener('click', () => {
                 document.getElementById('cylExp').innerHTML = text;
                 cylExp.style.display = "block";
                 conicalExp.style.display = "none";
+
+                openTitle.style.display = "none";
+                openTitleSub.style.display = "none";
             });
 
 
@@ -51,6 +60,9 @@ document.getElementById('conical').addEventListener('click', () => {
                 conicalExp.style.display = "block";
                 cylExp.style.display = "none";
 
+                openTitle.style.display = "none";
+                openTitleSub.style.display = "none";
+
             });
      
 })
@@ -60,6 +72,9 @@ document.getElementById('none').addEventListener('click', function(event) {
 
             conicalExp.style.display = "none";
             cylExp.style.display = "none";
+
+            openTitle.style.display = "block";
+                openTitleSub.style.display = "block";
             
     
 })
