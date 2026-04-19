@@ -6,29 +6,9 @@ const openTitle = document.getElementById('openTitle');
 const openTitleSub =  document.getElementById('openTitleSub');
 
 conicalExp.style.display = "none";
+cylExp.style.display = "none";
 
 //popup test
-document.getElementById('popupButton').addEventListener('click', () => {
-
-      fetch('./popup.html')
-            .then(res => res.text())
-            .then(text => {
-                document.getElementById('popup').innerHTML = text;
-                popup.style.display = "block";
-            });
-
-
-})
-
-
-document.getElementById('popup').addEventListener('click', function(event) {
-
-     if (event.target.id == 'close-button') {
-               document.getElementById('popup').style.display = "none";
-        
-     }
-
-})
 
 //cylinder popup
 document.getElementById('cylindrical').addEventListener('click', () => {
@@ -40,15 +20,10 @@ document.getElementById('cylindrical').addEventListener('click', () => {
                 cylExp.style.display = "block";
                 conicalExp.style.display = "none";
 
-                openTitle.style.display = "none";
-                openTitleSub.style.display = "none";
             });
 
 
 })
-
-
-
 
 //conical
 document.getElementById('conical').addEventListener('click', () => {
@@ -60,9 +35,6 @@ document.getElementById('conical').addEventListener('click', () => {
                 conicalExp.style.display = "block";
                 cylExp.style.display = "none";
 
-                openTitle.style.display = "none";
-                openTitleSub.style.display = "none";
-
             });
      
 })
@@ -73,8 +45,4 @@ document.getElementById('none').addEventListener('click', function(event) {
             conicalExp.style.display = "none";
             cylExp.style.display = "none";
 
-            openTitle.style.display = "block";
-                openTitleSub.style.display = "block";
-            
-    
 })

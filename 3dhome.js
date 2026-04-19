@@ -78,8 +78,6 @@ loader.load(
     model.rotation.x = Math.PI;
     model.rotation.z = Math.PI;
 
-
-    scene.add(model);
     sceneGroup.add(model)
 }
 );
@@ -127,42 +125,37 @@ const lineMaterial = new THREE.LineBasicMaterial( {
 const sphere = new THREE.LineSegments(sphereEdge, lineMaterial);
 scene.add(sphere);
 
+
+
 // //testing loglat math
-const boulderGeom = new THREE.SphereGeometry(0.001,10,10);
-const boulderMat = new THREE.MeshBasicMaterial({color: 0xffffff});
 
-const boulder = new THREE.Mesh(boulderGeom, boulderMat);
-scene.add(boulder);
-boulder.position.set(-0.0641112,0.0540155,0.0052994);
+const locations = [
+    { name: "Boulder", coords: [-0.0641112, 0.0540155, 0.0052994] },
+    { name: "Houston", coords: [-0.0705571, 0.041695, 0.0184181] },
+    { name: "New York", coords: [-0.0515149, 0.0547905, 0.0374195] },
+    { name: "McDonald Island", coords: [0.0503623, -0.0671575, -0.003084] }
+];
 
-//houston
-const timorGeom = new THREE.SphereGeometry(0.001,10,10);
-const timorMat = new THREE.MeshBasicMaterial({color: 0xffffff});
+const positions = new Float32Array(
+    locations.flatMap(loc => loc.coords)
+);
 
-const timor = new THREE.Mesh(timorGeom, timorMat);
-scene.add(timor);
-timor.position.set(-0.0705571,0.041695,0.0184181);
 
-//newyork
-const newyGeom = new THREE.SphereGeometry(0.001,10,10);
-const newyMat = new THREE.MeshBasicMaterial({color: 0xff0000});
+const geometry = new THREE.BufferGeometry();
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-const newy = new THREE.Mesh(newyGeom, newyMat);
-scene.add(newy);
-newy.position.set(-0.0515149,0.0547905,0.0374195);
+const material = new THREE.PointsMaterial({
+    color: 0xff0000,
+    size: 10,              // 👈 size in pixels (important!)
+    sizeAttenuation: false // keeps size consistent regardless of distance
+});
 
-//mcdonald island
-const mcdonaldGeom = new THREE.SphereGeometry(0.001,10,10);
-const mcdonaldMat = new THREE.MeshBasicMaterial({color: 0xff0000});
 
-const mcdonald = new THREE.Mesh(mcdonaldGeom, mcdonaldMat);
-scene.add(mcdonald);
-mcdonald.position.set(0.0503623,-0.0671575,-0.003084);
 
-// const redGroup = new THREE.Group();
-// redGroup.add(mcdonald);
-// redGroup.add(newy);
+const points = new THREE.Points(geometry, material);
+points.userData.locations = locations;
 
+scene.add(points);
 
 
 //putting all of the models into a group
@@ -170,23 +163,36 @@ const sceneGroup = new THREE.Group();
 scene.add(sceneGroup);
 
 sceneGroup.add(sphere);
-sceneGroup.add(model);
 sceneGroup.add(cone);
 sceneGroup.add(cylinder);
+
+// const redGroup = new THREE.Group();
+// scene.add(redGroup);
+// redGroup.add(mcdonald);
+// redGroup.add(newy);
+
 
 //Animation
 const lightOffset = new THREE.Vector3(1,1,1);
 
 //ray tracing
-const raycaster = new THREE.Raycaster();
+const raycasterG = new THREE.Raycaster();
+const raycasterP = new THREE.Raycaster();
+raycasterP.params.Points.threshold = 0.01;
+
 const mouse = new THREE.Vector2();
 
 window.addEventListener('mousemove', (event) => {
 
     //convert screen coordinates to normalized device coordinates
-    mouse.x = (event.clientX / window.innerWidth) * 2 -1;
-    mouse.y = (event.clientY / window.innerHeight) * 2 -1;
-})
+    
+    const rect = renderer.domElement.getBoundingClientRect();
+
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+});
+
+document.addEventListener('mousedown', onMouseDown);
 
     function animate (t=0) {
         requestAnimationFrame(animate);
@@ -201,11 +207,11 @@ window.addEventListener('mousemove', (event) => {
         controls.update();
 
         //raycaster
-        raycaster.setFromCamera(mouse,camera);
+        raycasterG.setFromCamera(mouse,camera);
         const objectsToTest = [];
         if (model) { objectsToTest.push(model);}
 
-        const intersections = raycaster.intersectObjects(objectsToTest,true);
+        const intersections = raycasterG.intersectObjects(objectsToTest,true);
         if (intersections.length > 0) {
             light.color.set(0x9898c);
         }
@@ -217,17 +223,73 @@ window.addEventListener('mousemove', (event) => {
     }
     animate();
 
-//Load buttons
+    //rayhelper
+//     const rayHelper = new THREE.ArrowHelper(
+//     raycasterP.ray.direction,
+//     raycasterP.ray.origin,
+//     1,
+//     0xffff00
+// );
+
+// scene.add(rayHelper);
+
+function onMouseDown() {
+       camera.updateMatrixWorld();
+    controls.update();
+
+    raycasterP.setFromCamera(mouse, camera);
+
+    // visualize ray correctly
+    // rayHelper.position.copy(raycasterP.ray.origin);
+    // rayHelper.setDirection(raycasterP.ray.direction.clone().normalize());
+
+    const globeHit = raycasterP.intersectObject(model, true);
+    const pointHit = raycasterP.intersectObject(points);
+
+    if (pointHit.length > 0) {
+        if (globeHit.length > 0 &&
+            globeHit[0].distance < pointHit[0].distance) return;
+
+        const index = pointHit[0].index;
+        console.log(points.userData.locations[index].name);
+    }
+};
+
+
+
+const divExplain = document.getElementById("explanation");
+const projectsNavbar = document.getElementById("projectsNavbar");
 const coneButton = document.getElementById("conical");
+const cylinderButton = document.getElementById("cylindrical");
+
+const conicalExp = document.getElementById("conicalExp");
+const cylExp = document.getElementById("cylExp");
+
+const title = document.getElementById("openTitle");
+const titleSub = document.getElementById("openTitleSub");
+
+
+
+//Load buttons
 
 coneButton.addEventListener('click', () => {
-
 camera.position.z = 0.25;
 camera.position.y = 0;
     
     camera.clearViewOffset()
     cone.visible = true;
     cylinder.visible = false;
+    
+    divExplain.style.display = "none";
+    projectsNavbar.style.display = "none";
+
+    conicalExp.style.display = "block";
+    cylExp.style.display = "none";
+
+    title.style.display = "none";
+    titleSub.style.display = "none";
+  
+
     camera.setViewOffset(
   w,        // full width
   h,       // full height
@@ -241,10 +303,6 @@ camera.position.y = 0;
 
 }
 );
-
-
-const cylinderButton = document.getElementById("cylindrical");
-
     
 
 cylinderButton.addEventListener('click', () => {
@@ -258,6 +316,16 @@ camera.clearViewOffset()
     cone.visible = false;
     model.visible = true;
 
+    divExplain.style.display = "none";
+    projectsNavbar.style.display = "none";
+
+    conicalExp.style.display = "none";
+    cylExp.style.display = "block";
+    
+    title.style.display = "none";
+    titleSub.style.display = "none";
+
+   
 camera.setViewOffset(
   w,        // full width
   h,       // full height
@@ -282,9 +350,16 @@ camera.position.y = 0;
     cone.visible = false;
     sphere.visible = true;
     model.visible = true;
-    
-   
 
+    divExplain.style.display = "block";
+    conicalExp.style.display = "none";
+    cylExp.style.display = "none";
+
+     
+    title.style.display = "block";
+    titleSub.style.display = "block";
+
+    projectsNavbar.style.display = "block";
 
 }
 );
@@ -292,23 +367,45 @@ camera.position.y = 0;
 
 //project showing hiding
 const project1 = document.getElementById("project1");
-const project2 = document.getElementById("project1");
-const project3 = document.getElementById("project1");
-const project4 = document.getElementById("project1");
-const project5 = document.getElementById("project1");
-const project6 = document.getElementById("project1");
+const project2 = document.getElementById("project2");
+const project3 = document.getElementById("project3");
+const project4 = document.getElementById("project4");
+const project5 = document.getElementById("project5");
+const project6 = document.getElementById("project6");
 
-document.getElementById('project1').addEventListener('click', () => {
+// document.getElementById('project1').addEventListener('click', () => {
 
-    newy.visible = true;
-    mcdonald.visible = true;
+//     redGroup.visible = true;
     
         
-        });
+//         });
 
-document.getElementById('project2').addEventListener('click', () => {
+// document.getElementById('project2').addEventListener('click', () => {
 
-    newy.visible = false;
-    mcdonald.visible = false;
+//     redGroup.visible = false;
         
-        });
+//         });
+
+// document.getElementById('project3').addEventListener('click', () => {
+
+//     redGroup.visible = false;
+        
+//         });
+
+// document.getElementById('project4').addEventListener('click', () => {
+
+//     redGroup.visible = false;
+        
+//         });
+
+// document.getElementById('project5').addEventListener('click', () => {
+
+//     redGroup.visible = false;
+        
+//         });
+
+// document.getElementById('project6').addEventListener('click', () => {
+
+//     redGroup.visible = false;
+        
+//         });

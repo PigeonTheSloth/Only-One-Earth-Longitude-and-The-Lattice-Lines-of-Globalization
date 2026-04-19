@@ -7,11 +7,6 @@ const project6 = document.getElementById("project1");
 
 document.getElementById('project1').addEventListener('click', () => {
 
-      fetch('./popup.html')
-            .then(res => res.text())
-            .then(text => {
-                document.getElementById('popup').innerHTML = text;
-                popup.style.display = "block";
-            });
+    
         
         });
