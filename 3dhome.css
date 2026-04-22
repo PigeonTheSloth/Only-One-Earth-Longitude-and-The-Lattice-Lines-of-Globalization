@@ -227,6 +227,7 @@ figure {
     position:fixed;
     color: white;
     z-index: 2005;
+    font-size: 14px;
     display: flex;
     top: 25%;
     left:17%;
@@ -234,9 +235,9 @@ figure {
 
 
 #projectsNavbar li {
-    padding: 10px;
+    padding: 5px;
      list-style-type:none;
-       border-radius: 30px;
+       border-radius: 10px;
   
 }
 
@@ -275,3 +276,70 @@ figure {
 }
 
 
+/* projects */
+
+#halfpPopup {
+
+    position: fixed;
+
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    z-index: 4000;
+
+    background: white;
+    display: none;
+    padding: 10px;
+    border-radius:10px;
+
+    justify-content:center;
+    text-align: center;
+}
+
+#halfpPopup #glacier #slides img{
+    width: 400px;
+}
+
+#halfpPopup #glacier #slides{
+   justify-content:center
+}
+
+#closeButtonAF {
+    width: 20px;
+    float: right;
+}
+
+/* point lables */
+.point-label {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+}
+
+/* Jocelyn project */
+
+#joc-vid {
+    width: 500px;
+}
+
+#jocDeliv2 img{
+    width: 500px;
+}
+
+
+#closeButtonAF {
+    width: 20px;
+    float: right;
+}
+
+/* mena */
+
+#menaImg img{
+
+    width:300px;
+}

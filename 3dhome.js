@@ -1,7 +1,24 @@
+
+//load dependencies
 import * as THREE from "three"
 import { OrbitControls } from "jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "jsm/loaders/GLTFLoader.js";
 
+//3d loading
+
+//project loading
+import { createPoints } from "./generatePoints.js";
+import { updateLabels } from "./labelUpdater.js";
+import { raycasterPointsInit } from "./raycasterPoints.js"
+
+import { callProjects } from "./callProjects.js";
+import { createProjectsNavbar } from "./generateProjectNavbar.js";
+
+//meshmakers
+import {createSphere } from "./generateMeshes/createSphere.js"
+import {createCone } from "./generateMeshes/createCone.js"
+import {createCylinder } from "./generateMeshes/createCylinder.js"
+import {createGlobe} from "./generateMeshes/createGlobe.js"
 
 /*
 THREE ELEMENTS NEEDED:
@@ -26,6 +43,9 @@ renderer.setSize(w,h);
 //SCENE
 
 const scene = new THREE.Scene();
+
+//add points to scene;
+const { points, allLocations } = createPoints(scene);
 
 //CAMERA
 
@@ -59,104 +79,22 @@ light.target.position.set(0, 0, 0);
 scene.add(light);
 scene.add(light.target);
 
-//3d model of the globe
+
+//build globe model
 let model;
-
-loader.load(
-    './latitude_and_longitude_low_poly/scene.gltf',
-     (gltf) => {
-    model = gltf.scene;
-
-    // Scale down if too big
-    model.scale.set(0.5, 0.5, 0.5);
-
-    // Move to center of scene
-    model.position.set(0, 0, 0);
-
-    // Optional: rotate if needed
-    model.rotation.y = Math.PI; 
-    model.rotation.x = Math.PI;
-    model.rotation.z = Math.PI;
-
-    sceneGroup.add(model)
-}
-);
-
-
+createGlobe(scene, (loadedModel) => {
+    model = loadedModel;
+    // anything that depends on model goes here
+});
 
 //conical projection
-const coneMesh = new THREE.ConeGeometry(0.1, 0.15, 36);
-const coneMaterial = new THREE.MeshBasicMaterial( {
-    color: 0xffffff, wireframe: true
-})
-
-const cone = new THREE.Mesh(coneMesh, coneMaterial);
-cone.position.set(0,0.08,0);
-cone.visible = false;
-scene.add(cone);
+const cone = createCone();
 
 //cylindrical projection
-const cylinderMesh = new THREE.CylinderGeometry(0.085, 0.085, 0.17, 36);
-const cylinderEdge= new THREE.EdgesGeometry(cylinderMesh);
-
-const lineCyl = new THREE.LineBasicMaterial( {
-    color: 0xffffff
-});
-
-const cylinder = new THREE.LineSegments(cylinderEdge, lineCyl);
-
-
-cylinder.visible = false;
-scene.add(cylinder);
-
-
+const cylinder = createCylinder();
 
 //sphere wireframe
-
-const sphereMesh = new THREE.SphereGeometry(0.084, 36, 36,);
-const sphereEdge = new THREE.EdgesGeometry(sphereMesh);
-
-const lineMaterial = new THREE.LineBasicMaterial( {
-    color: 0xffffff,
-    transparent: true,
-    opacity: 0.25
-});
-
-const sphere = new THREE.LineSegments(sphereEdge, lineMaterial);
-scene.add(sphere);
-
-
-
-// //testing loglat math
-
-const locations = [
-    { name: "Boulder", coords: [-0.0641112, 0.0540155, 0.0052994] },
-    { name: "Houston", coords: [-0.0705571, 0.041695, 0.0184181] },
-    { name: "New York", coords: [-0.0515149, 0.0547905, 0.0374195] },
-    { name: "McDonald Island", coords: [0.0503623, -0.0671575, -0.003084] }
-];
-
-const positions = new Float32Array(
-    locations.flatMap(loc => loc.coords)
-);
-
-
-const geometry = new THREE.BufferGeometry();
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-const material = new THREE.PointsMaterial({
-    color: 0xff0000,
-    size: 10,              // 👈 size in pixels (important!)
-    sizeAttenuation: false // keeps size consistent regardless of distance
-});
-
-
-
-const points = new THREE.Points(geometry, material);
-points.userData.locations = locations;
-
-scene.add(points);
-
+const sphere = createSphere();
 
 //putting all of the models into a group
 const sceneGroup = new THREE.Group();
@@ -165,11 +103,7 @@ scene.add(sceneGroup);
 sceneGroup.add(sphere);
 sceneGroup.add(cone);
 sceneGroup.add(cylinder);
-
-// const redGroup = new THREE.Group();
-// scene.add(redGroup);
-// redGroup.add(mcdonald);
-// redGroup.add(newy);
+sceneGroup.add(model)
 
 
 //Animation
@@ -179,6 +113,7 @@ const lightOffset = new THREE.Vector3(1,1,1);
 const raycasterG = new THREE.Raycaster();
 const raycasterP = new THREE.Raycaster();
 raycasterP.params.Points.threshold = 0.01;
+raycasterG.params.Points.threshold = 0.01;
 
 const mouse = new THREE.Vector2();
 
@@ -196,6 +131,9 @@ document.addEventListener('mousedown', onMouseDown);
 
     function animate (t=0) {
         requestAnimationFrame(animate);
+
+        updateLabels(allLocations, camera);
+
 
         //fixed lighting
         const rotatedOffset = lightOffset.clone().applyQuaternion(camera.quaternion);
@@ -233,26 +171,19 @@ document.addEventListener('mousedown', onMouseDown);
 
 // scene.add(rayHelper);
 
+callProjects(name); //behavior for fetching projects
+
 function onMouseDown() {
-       camera.updateMatrixWorld();
+    camera.updateMatrixWorld();
     controls.update();
 
     raycasterP.setFromCamera(mouse, camera);
-
+   
     // visualize ray correctly
     // rayHelper.position.copy(raycasterP.ray.origin);
     // rayHelper.setDirection(raycasterP.ray.direction.clone().normalize());
 
-    const globeHit = raycasterP.intersectObject(model, true);
-    const pointHit = raycasterP.intersectObject(points);
-
-    if (pointHit.length > 0) {
-        if (globeHit.length > 0 &&
-            globeHit[0].distance < pointHit[0].distance) return;
-
-        const index = pointHit[0].index;
-        console.log(points.userData.locations[index].name);
-    }
+    raycasterPointsInit(raycasterP, points, model);
 };
 
 
@@ -364,48 +295,16 @@ camera.position.y = 0;
 }
 );
 
+const hpopup = document.getElementById("halfpPopup");
+hpopup.addEventListener('click', (e) => {
+    const button = e.target.closest("#closeButtonAF");
+    if (button) {
+        e.currentTarget.style.display = "none";
+        console.log("closeconfirm");
+    }
+});
 
 //project showing hiding
-const project1 = document.getElementById("project1");
-const project2 = document.getElementById("project2");
-const project3 = document.getElementById("project3");
-const project4 = document.getElementById("project4");
-const project5 = document.getElementById("project5");
-const project6 = document.getElementById("project6");
 
-// document.getElementById('project1').addEventListener('click', () => {
 
-//     redGroup.visible = true;
-    
-        
-//         });
-
-// document.getElementById('project2').addEventListener('click', () => {
-
-//     redGroup.visible = false;
-        
-//         });
-
-// document.getElementById('project3').addEventListener('click', () => {
-
-//     redGroup.visible = false;
-        
-//         });
-
-// document.getElementById('project4').addEventListener('click', () => {
-
-//     redGroup.visible = false;
-        
-//         });
-
-// document.getElementById('project5').addEventListener('click', () => {
-
-//     redGroup.visible = false;
-        
-//         });
-
-// document.getElementById('project6').addEventListener('click', () => {
-
-//     redGroup.visible = false;
-        
-//         });
+createProjectsNavbar( points, allLocations );
