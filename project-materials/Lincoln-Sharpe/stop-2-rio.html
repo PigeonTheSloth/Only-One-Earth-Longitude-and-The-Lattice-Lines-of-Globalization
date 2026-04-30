@@ -1,0 +1,413 @@
+
+
+<img id = "closeButton" src="./icons/close.png">
+<!--     
+<link rel="stylesheet" href="styles.css?v=3"> -->
+
+<style>
+  .sharpePage { background: #1a3524; }
+
+  /* Equator bisector accent */
+  .equator-accent {
+    position: fixed;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232,160,48,0.22) 10%, rgba(232,160,48,0.22) 90%, transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .equator-accent::before {
+    content: 'EQUATOR · 0°';
+    position: absolute;
+    top: -16px;
+    right: 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: rgba(232,160,48,0.4);
+  }
+  .stage { position: relative; z-index: 2; }
+
+  /* Stadium silhouette as footage */
+  .stadium-footage {
+    position: relative;
+    aspect-ratio: 16/9;
+    background:
+      radial-gradient(ellipse at center 85%, #3a8050 0%, #1a4020 40%, #0a1a10 80%),
+      linear-gradient(180deg, #0a1a10, #0a1a10);
+    overflow: hidden;
+  }
+  .stadium-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .silence-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center 75%, transparent 20%, rgba(0,0,0,0.5) 70%);
+    pointer-events: none;
+  }
+  .stadium-label {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(248,244,236,0.5);
+    text-transform: uppercase;
+  }
+  .stadium-label .rec {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: #c04030;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: rec 1.6s ease-in-out infinite;
+    vertical-align: middle;
+  }
+  @keyframes rec { 50% { opacity: 0.3; } }
+
+  .minute-mark {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+
+  .crowd-caption {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: rgba(248, 244, 236, 0.85);
+    letter-spacing: 0.5px;
+    max-width: 80%;
+  }
+
+  /* Silence beats / waveform */
+  .beats {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    margin: 32px 0 8px;
+  }
+  .beats .bar {
+    width: 3px;
+    background: rgba(248,244,236,0.35);
+    border-radius: 1px;
+    animation: beatpulse 1.2s ease-in-out infinite;
+  }
+  @keyframes beatpulse {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(1); }
+  }
+  .beats.silenced .bar { animation: none; transform: scaleY(0.05); opacity: 0.2; }
+
+  /* Crowd counter */
+  .crowd-stat {
+    text-align: center;
+    padding: 40px 0 56px;
+    border-top: 1px solid rgba(248,244,236,0.1);
+    border-bottom: 1px solid rgba(248,244,236,0.1);
+    margin-bottom: 56px;
+  }
+  .crowd-stat .big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 120px;
+    line-height: 1;
+    color: var(--cream);
+    font-style: italic;
+    letter-spacing: -3px;
+  }
+  .crowd-stat .big .unit {
+    font-style: normal;
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--ink-light);
+    vertical-align: super;
+    margin-left: 10px;
+    text-transform: uppercase;
+  }
+  .crowd-stat .cap {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  .ghiggia-quote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.4;
+    color: var(--cream);
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 56px;
+    padding: 40px 0;
+    position: relative;
+  }
+  .ghiggia-quote::before, .ghiggia-quote::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 48px;
+    height: 1px;
+    background: rgba(58,138,80,0.5);
+    transform: translateX(-50%);
+  }
+  .ghiggia-quote::before { top: 0; }
+  .ghiggia-quote::after { bottom: 0; }
+  .ghiggia-quote .attrib {
+    display: block;
+    margin-top: 18px;
+    font-family: 'DM Mono', monospace;
+    font-style: normal;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--stop2);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+
+<div class="sharpePage">
+
+<div class="equator-accent"></div>
+
+<nav class="chrome">
+  <div class="chrome-brand"><span class="dot"></span>THE EARNED TOUCH</div>
+  <div class="chrome-nav">
+    <a href="stop-1-sheffield.html">01 Sheffield</a>
+    <span class="sep">/</span>
+    <a href="stop-2-rio.html" class="current">02 Rio</a>
+    <span class="sep">/</span>
+    <a href="stop-3-mexicocity.html">03 Mexico City</a>
+    <span class="sep">/</span>
+    <a href="stop-4-doha.html">04 Doha</a>
+    <span class="sep">/</span>
+    <a href="coordinate-map.html">The Map</a>
+  </div>
+</nav>
+
+<main class="stage">
+
+  <section class="stop-hero">
+    <div class="reveal d1">
+      <div class="eyebrow">Stop 02 · The ball crosses the equator</div>
+      <h1>Rio,<br>and a silence<br><em>200,000</em> people made.</h1>
+    </div>
+    <div class="side-meta reveal d2">
+      <div class="coord-stamp"><span class="bracket">[</span> 43°W · 23°S <span class="bracket">]</span></div>
+      <div class="year">1950</div>
+      <div class="mono dim" style="font-size:11px; letter-spacing:3px;">LEFT HALF · BELOW EQUATOR</div>
+    </div>
+  </section>
+
+  <!-- Locator -->
+  <section class="locator reveal d2">
+    <div class="locator-panel">
+      <div class="label"><span>WORLD · ARC SHEFFIELD → RIO</span><span>43°W 23°S</span></div>
+      <svg id="worldMiniSvg" viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="240" fill="#0e2235"/>
+        <g id="worldMiniContours"></g>
+        <line x1="250" y1="0" x2="250" y2="240" stroke="#e8a030" stroke-width="1" stroke-dasharray="4 3" opacity="0.85"/>
+        <line x1="0" y1="120" x2="500" y2="120" stroke="#e8a030" stroke-width="1" stroke-dasharray="4 3" opacity="0.85"/>
+        <!-- arc Sheffield (250, 50) → Rio (250-43*(500/360)=250-60=190, 120+23*(120/90)=151) -->
+        <path d="M250 50 Q215 100 190 151" fill="none" stroke="#c8dcc0" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.55"/>
+        <!-- Sheffield dim -->
+        <circle cx="250" cy="50" r="4" fill="#e8a030" opacity="0.55"/>
+        <!-- Rio -->
+        <circle cx="190" cy="151" r="14" fill="#3a8a50" opacity="0.18"/>
+        <circle cx="190" cy="151" r="6" fill="#3a8a50"/>
+        <text x="200" y="148" font-family="'DM Mono', monospace" font-size="9" fill="#3a8a50">RIO</text>
+        <text x="200" y="159" font-family="'DM Mono', monospace" font-size="8" fill="#2a6a40">1950 · 43°W 23°S</text>
+        <text x="250" y="232" text-anchor="middle" font-family="'DM Mono', monospace" font-size="8" fill="#e8a030" opacity="0.7">0°</text>
+        <text x="8" y="115" font-family="'DM Mono', monospace" font-size="8" fill="#e8a030" opacity="0.7">0° EQUATOR</text>
+      </svg>
+    </div>
+
+    <div class="locator-panel">
+      <div class="label"><span>PITCH · COORDINATE OVERLAY</span><span>LEFT HALF · BELOW EQ.</span></div>
+      <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="300" fill="#1d4a24"/>
+        <rect x="0" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="125" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="250" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="375" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="14" y="14" width="472" height="272" fill="none" stroke="#c8dcc0" stroke-width="1.5"/>
+        <line x1="250" y1="14" x2="250" y2="286" stroke="#e8a030" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.85"/>
+        <line x1="14" y1="150" x2="486" y2="150" stroke="#e8a030" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.85"/>
+        <circle cx="250" cy="150" r="42" fill="none" stroke="#c8dcc0" stroke-width="1"/>
+        <circle cx="250" cy="150" r="3" fill="#c8dcc0"/>
+        <rect x="14" y="70" width="72" height="160" fill="none" stroke="#c8dcc0" stroke-width="1"/>
+        <rect x="414" y="70" width="72" height="160" fill="none" stroke="#c8dcc0" stroke-width="1"/>
+        <rect x="6" y="125" width="8" height="50" fill="none" stroke="#c8dcc0" stroke-width="1.2"/>
+        <rect x="486" y="125" width="8" height="50" fill="none" stroke="#c8dcc0" stroke-width="1.2"/>
+        <!-- Previous Sheffield pin (dim) -->
+        <circle cx="250" cy="75" r="5" fill="#e8a030" opacity="0.4"/>
+        <!-- Rio pin: x=250-43*(472/360)=250-56=194, y=150+23*(272/180)=150+35=185 -->
+        <circle cx="194" cy="185" r="16" fill="#3a8a50" opacity="0.2">
+          <animate attributeName="r" values="16;22;16" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.2;0.06;0.2" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="194" cy="185" r="7" fill="#3a8a50"/>
+        <!-- arc from Sheffield dim to Rio -->
+        <path d="M250 75 Q220 130 194 185" fill="none" stroke="#c8dcc0" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+        <text x="206" y="182" font-family="'DM Mono', monospace" font-size="9" fill="#3a8a50">BALL · STOP 02</text>
+        <text x="206" y="194" font-family="'DM Mono', monospace" font-size="8" fill="#2a6a40">LEFT HALF · BELOW EQ.</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Footage -->
+  <div class="sec-head reveal">01 — Found footage · The 79th minute</div>
+  <section class="footage reveal">
+    <div class="footage-head">
+      <div>
+        <div class="title">Ghiggia, 79th minute.<br>The Maracanã goes quiet.</div>
+      </div>
+      <div class="meta">
+        Brazil 1 · Uruguay 2<br>
+        Final · World Cup 1950<br>
+        16 July · Maracanã · Rio
+      </div>
+    </div>
+
+    <div style="position:relative; width:100%; aspect-ratio:16/9;">
+      <iframe
+        src="https://www.youtube.com/embed/qBIjrdhuMpk?start=491&end=515"
+        style="position:absolute; inset:0; width:100%; height:100%; border:none;"
+        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        title="Ghiggia's goal — 1950 World Cup Final, 79th minute"
+      ></iframe>
+    </div>
+
+    <div class="footage-caption" style="text-align:center;">
+      Ghiggia cuts inside and finishes. The Maracanã — 200,000 people — goes silent. Brazil had already printed the championship newspapers. The camera catches what no one expected to film.
+    </div>
+  </section>
+
+  <!-- Crowd stat -->
+  <section class="crowd-stat reveal">
+    <div class="big">199,854<span class="unit">attending</span></div>
+    <div class="cap">Maracanã · 16 July 1950 · largest crowd ever to watch a football match</div>
+  </section>
+
+  <!-- Ghiggia line (short paraphrase, attribution + short quote under fair use limits) -->
+  <div class="ghiggia-quote reveal">
+    &ldquo;Only three people have, in their lifetimes, silenced the Maracanã.&rdquo;
+    <span class="attrib">&mdash; Alcides Ghiggia · Uruguayan winger, scorer of the 79th-minute goal</span>
+  </div>
+
+  <!-- Narrative -->
+  <div class="sec-head reveal">02 — Dispatch</div>
+  <section class="narrative reveal">
+    <div class="speaker">Wire dispatch · Maracanã · 16 July 1950</div>
+    <p>STOP. TWO HUNDRED THOUSAND PEOPLE IN THIS BOWL AND NO SOUND. STOP. GHIGGIA HIT IT AND THE CITY STOPPED. STOP.</p>
+    <p>I have been a correspondent for fourteen years. I know what large crowds sound like when they decide not to make a sound. This was the body learning something the mind had not yet accepted.</p>
+    <p>The newspapers were already printed. BRAZIL: WORLD CHAMPIONS. Forty thousand copies. Somewhere in this city a driver is sitting in a cab full of the wrong edition. He will know it in the morning when he opens the door and the headline is wrong.</p>
+    <p>The ball is still in the net. Nobody has moved it. Nobody in this stadium is looking at it.</p>
+  </section>
+
+  <nav class="foot-nav">
+    <div class="prev">
+      <div class="label">← Previous · Stop 01</div>
+      <a href="stop-1-sheffield.html" class="title-big">Sheffield, 1863</a>
+    </div>
+    <div class="center">
+      02 / 04 · Rio <br>
+      <a href="coordinate-map.html" style="color:var(--stop2); text-decoration:none; margin-top:6px; display:inline-block;">◎ The Map</a>
+    </div>
+    <div class="next">
+      <div class="label">Next → Stop 03</div>
+      <a href="stop-3-mexicocity.html" class="title-big">Mexico City, 1986 →</a>
+    </div>
+  </nav>
+</main>
+
+<script>
+  // Build decorative crowd dots in the stands of the stadium SVG
+  (function () {
+    const crowd = document.getElementById('crowd');
+    if (!crowd) return;
+    const ns = 'http://www.w3.org/2000/svg';
+    for (let i = 0; i < 380; i++) {
+      const x = Math.random() * 1600;
+      const topY = 440 + Math.sin((x/1600)*Math.PI) * -30;
+      const y = topY + Math.random() * (520 - topY);
+      const r = 0.9 + Math.random() * 1.3;
+      const c = document.createElementNS(ns, 'circle');
+      c.setAttribute('cx', x.toFixed(1));
+      c.setAttribute('cy', y.toFixed(1));
+      c.setAttribute('r', r.toFixed(2));
+      c.setAttribute('fill', '#f5f0e8');
+      c.setAttribute('opacity', (0.15 + Math.random()*0.25).toFixed(2));
+      crowd.appendChild(c);
+    }
+  })();
+
+  // Beat bars with silence moment
+  (function () {
+    const beats = document.getElementById('beats');
+    const label = document.getElementById('beat-label');
+    const bars = 64;
+    for (let i = 0; i < bars; i++) {
+      const b = document.createElement('div');
+      b.className = 'bar';
+      b.style.animationDelay = (Math.random() * 1.2).toFixed(2) + 's';
+      b.style.height = (40 + Math.random() * 60) + '%';
+      beats.appendChild(b);
+    }
+    // Flip to silence every ~6 seconds, then back
+    let silent = false;
+    setInterval(() => {
+      silent = !silent;
+      beats.classList.toggle('silenced', silent);
+      label.textContent = silent ? 'The bowl · 200,000 silences' : 'Crowd · 200,000 voices';
+    }, 5200);
+  })();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(async function() {
+  try {
+    const world = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const transform = d3.geoTransform({
+      point: function(lon, lat) {
+        this.stream.point(250 + lon * (500 / 360), 120 - lat * (240 / 180));
+      }
+    });
+    const path = d3.geoPath(transform);
+    const g = d3.select('#worldMiniContours');
+    g.append('path')
+      .datum(topojson.feature(world, world.objects.land))
+      .attr('fill', '#2a4a3a')
+      .attr('opacity', '0.9')
+      .attr('d', path);
+    g.append('path')
+      .datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
+      .attr('fill', 'none')
+      .attr('stroke', '#3d6b50')
+      .attr('stroke-width', '0.4')
+      .attr('d', path);
+  } catch(e) { console.warn('World map CDN unavailable:', e); }
+})();
+</script>
+
+</div>

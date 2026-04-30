@@ -1,96 +1,36 @@
 
-/*NAVBAR CSS*/
+/* DOCUMENT */
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family:arial;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#globeModel {
-    z-index:1;
-    position: absolute;
-    left: 0;
-    width: 100vw;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Prevents scrollbar from affecting dimensions */
+  font-family: arial;
 }
-
-#navBar header {
-    z-index: 10;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 48px;
-    overflow: hidden;
-
-    background-color:rgb(51, 58, 136);
-    color: white;
-
-    display: flex;
-
-}
-
-#navBar a {
-    text-decoration: none;
-    color: white;
-}
-
-#navBar .logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-#navBar .logo-image {
-    width: 20px;
-    height:20px;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#navBar .nav {
-    margin:0;
-    padding:0;
-    font-weight:bold;
-}
-
-#navBar .nav > ul {
-    margin: 0;
-    padding: 0;
-    line-height:48px;
-
-    list-style-type:none;
-}
-
-#navBar .nav > ul > li {
-    padding: 0 1em;
-    display: inline-block;
-}
-
-#navBar .nav > ul > li:hover {
-    background-color: #1763ff;
-}
-#navBar .space{
-    flex-grow:1;
-}
-
-
 /* buttons */
+
+html {
+    font-size: 1vw;
+}
 
 #button-container {
     left:50%;
     transform: translateX(-50%);
-    top: 85%;
+    /* top: 85%;
     width: 600px;
-    height: 80px;
+    height: 80px; */
     position: fixed;
     z-index: 12;
     justify-content: center;
 
-    
+  top: clamp(400px, 85%, 90vh);
+  width: clamp(30vw, 31vw, 90vw);
 }
 
 #conical {
@@ -98,8 +38,8 @@ body {
     background-color: white;
     position: absolute;
     right:0;
-     width: 190px;
-     height: 20px;
+    width: 10vw;
+      height: 2.2vh;
     text-align:center;
     border-radius: 30px;
 
@@ -111,8 +51,8 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 190px;
-    height: 20px;
+   width: 10vw;
+    height: 2.2vh;
     text-align:center;
       border-radius: 30px;
 
@@ -124,13 +64,31 @@ body {
     position: fixed;
     left: 0;
     z-index: 100;
-    width: 190px;
-    height: 20px;
+    width: 10vw;
+      height: 2.2vh;
     text-align:center;
-      border-radius: 30px;
+    border-radius: 30px;
   
 
 }
+
+
+#crochet {
+    z-index:12;
+    background-color: white;
+    position: absolute;
+    top: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 100;
+    width: 10vw;
+    height: 2.2vh;
+    text-align:center;
+    border-radius: 30px;
+
+}
+
 
 
 
@@ -198,8 +156,10 @@ figure {
     color:white;
     z-index: 2000;
     top: 8%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
 }
 
 #openTitleSub {
@@ -208,71 +168,49 @@ figure {
     color:rgb(150, 156, 186);
     z-index: 2000;
     top: 16%;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
 }
 
 #explanation {
+    font-size: 1.5vw;
     position:fixed;
     z-index: 2006;
     color: white;
-    top: 30%;
-    left: 70%;
-    right: 10%;
+    top: 15vh;
+    left: 70vw;
+    right: 10vw;
 }
 
 /*projects navbar*/
 
 #projectsNavbar {
     position:fixed;
-    color: white;
+    color: black;
     z-index: 2005;
-    font-size: 14px;
+    font-size: 1vw;
     display: flex;
-    top: 25%;
-    left:17%;
+    top: 15vh;
+    left:20vw;
 }
 
 
 #projectsNavbar li {
-    padding: 5px;
-     list-style-type:none;
-       border-radius: 10px;
+    padding: 0.5vw;
+    font-weight: bold;
+    list-style-type:none;
+    border-radius: 0.5vw;
+    margin: 0.7vw;
   
 }
 
-#projectsNavbar li {
-    margin : 1em;
-}
 
 #projectsNavbar li:hover {
    
    filter: grayscale(50%) brightness(500%);
  
-}
-
-#projectsNavbar #project1 {
-    background-color: red;
-}
-
-#projectsNavbar li:hover{
-    background-color:white;
-}
-
-#projectsNavbar #project2 {
-    background-color: orange;
-}
-#projectsNavbar #project3 {
-    background-color: yellow;
-}
-#projectsNavbar #project4 {
-    background-color: green;
-}
-#projectsNavbar #project5 {
-    background-color: blue;
-}
-#projectsNavbar #project6 {
-    background-color: purple;
 }
 
 
@@ -285,50 +223,50 @@ figure {
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
-    width: 500px;
+    width: 800px;
     height: 500px;
     z-index: 4000;
 
-    background: white;
+    /* background: white; */
     display: none;
     padding: 10px;
     border-radius:10px;
 
     justify-content:center;
+    align-items:center;
     text-align: center;
 }
 
 #halfpPopup #glacier #slides img{
-    width: 400px;
+    width: 600px;
 }
 
 #halfpPopup #glacier #slides{
-   justify-content:center
+   justify-content:center;
 }
 
-#closeButtonAF {
+#halfpPopup #glacier {
+    justify-content:center;
+}
+
+#halfpPopup #slideButtons {
+    justify-content: center;
+}
+
+#closeButton {
     width: 20px;
     float: right;
+    filter: invert(100%);
 }
 
 /* point lables */
 .point-label {
     position: absolute;
     color: white;
-    font-size: 12px;
+    font-size: 16px;
     pointer-events: none;
     transform: translate(-50%, -50%);
     z-index: 2000;
-}
-
-/* Jocelyn project */
-
-#joc-vid {
-    width: 500px;
-}
-
-#jocDeliv2 img{
-    width: 500px;
 }
 
 
@@ -342,4 +280,21 @@ figure {
 #menaImg img{
 
     width:300px;
+}
+
+/*ARIK*/
+
+#arikImg {
+    width:300px;
+}
+
+/*Abhram*/
+
+.slideButton {
+    background-color: gray;
+    width: 11px;
+    border-radius: 5px;
+    padding: 5px;
+    height: 10px;
+    color:white;
 }

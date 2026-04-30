@@ -28,8 +28,10 @@ THREE ELEMENTS NEEDED:
 
 //set size of renderer
 
-const w = window.innerWidth;
-const h = window.innerHeight;
+// const w = window.innerWidth;
+// const h = window.innerHeight;
+const w = document.documentElement.clientWidth;
+const h = document.documentElement.clientHeight;
 
 const canvas = document.getElementById('globeModel');
 
@@ -86,6 +88,20 @@ createGlobe(scene, (loadedModel) => {
     model = loadedModel;
     // anything that depends on model goes here
 });
+
+//crochet globe:
+let root;
+    loader.load('./crochet-3d/crochet3d.glb', (glb) => {
+        console.log(glb);
+          
+        root = glb.scene;
+        root.scale.set(0.24, 0.23, 0.24);
+        root.position.set(0,-0.06,0);
+        root.rotation.set(0,-0.38,0)
+        scene.add(root);
+        root.visible = false;
+    });
+
 
 //conical projection
 const cone = createCone();
@@ -151,10 +167,10 @@ document.addEventListener('mousedown', onMouseDown);
 
         const intersections = raycasterG.intersectObjects(objectsToTest,true);
         if (intersections.length > 0) {
-            light.color.set(0x9898c);
+            light.color.set(0xffffff);
         }
         else {
-            light.color.set(0xffffff);
+            light.color.set(0x97a5bd);
         }
 
      
@@ -210,6 +226,7 @@ camera.position.y = 0;
     camera.clearViewOffset()
     cone.visible = true;
     cylinder.visible = false;
+    root.visible = false;
     
     divExplain.style.display = "none";
     projectsNavbar.style.display = "none";
@@ -238,7 +255,7 @@ camera.position.y = 0;
 
 cylinderButton.addEventListener('click', () => {
 
-camera.position.z = 0.2;
+camera.position.z = 0.25;
 camera.position.y = 0;
 
 camera.clearViewOffset()
@@ -246,6 +263,7 @@ camera.clearViewOffset()
     cylinder.visible = true;
     cone.visible = false;
     model.visible = true;
+    root.visible = false;
 
     divExplain.style.display = "none";
     projectsNavbar.style.display = "none";
@@ -282,6 +300,37 @@ camera.position.y = 0;
     sphere.visible = true;
     model.visible = true;
 
+
+    divExplain.style.display = "block";
+    conicalExp.style.display = "none";
+    cylExp.style.display = "none";
+    root.visible = false;
+
+     
+    title.style.display = "block";
+    titleSub.style.display = "block";
+
+    projectsNavbar.style.display = "block";
+
+}
+);
+
+
+const crochetButton = document.getElementById("crochet");
+crochetButton.addEventListener('click', () => {
+
+   
+camera.clearViewOffset()
+
+camera.position.z = 0.25;
+camera.position.y = 0;
+
+    cylinder.visible = false;
+    cone.visible = false;
+    sphere.visible = true;
+    model.visible = false;
+    root.visible = true;
+
     divExplain.style.display = "block";
     conicalExp.style.display = "none";
     cylExp.style.display = "none";
@@ -297,7 +346,7 @@ camera.position.y = 0;
 
 const hpopup = document.getElementById("halfpPopup");
 hpopup.addEventListener('click', (e) => {
-    const button = e.target.closest("#closeButtonAF");
+    const button = e.target.closest("#closeButton");
     if (button) {
         e.currentTarget.style.display = "none";
         console.log("closeconfirm");

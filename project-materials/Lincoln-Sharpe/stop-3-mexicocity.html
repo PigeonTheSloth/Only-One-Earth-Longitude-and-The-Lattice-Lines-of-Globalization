@@ -1,0 +1,443 @@
+
+
+<img id = "closeButton" src="./icons/close.png">
+    
+<title>Stop 3 — Mexico City, 1986 · The Earned Touch</title>
+<link rel="stylesheet" href="styles.css?v=3">
+<style>
+  .sharpePage { background: #0f2235; }
+
+  /* Ocean blue wash */
+  .hemisphere-accent {
+    position: fixed;
+    inset: 56px 0 0 0;
+    background:
+      radial-gradient(ellipse at 25% 40%, rgba(64, 128, 184, 0.08), transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(26, 58, 92, 0.25), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .stage { position: relative; z-index: 2; }
+
+  /* Dual footage */
+  .dual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .clip {
+    background: var(--ink);
+    border: 1px solid rgba(232,228,210,0.1);
+    overflow: hidden;
+    position: relative;
+  }
+  .clip-hd {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(248,244,236,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .clip-hd .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid currentColor;
+    color: var(--stop3);
+    background: rgba(64,128,184,0.08);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+  .clip.hand .clip-hd .tag {
+    color: #c88060;
+    border-color: rgba(200,128,96,0.5);
+    background: rgba(200,128,96,0.06);
+  }
+  .clip-hd .title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--cream);
+  }
+  .clip-hd .minute {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--ink-light);
+    text-align: right;
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+
+  /* clip bodies use SVG "freeze frames" */
+  .clip-frame {
+    aspect-ratio: 16/9;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+  }
+  .clip-frame svg { width: 100%; height: 100%; display: block; }
+  .freeze {
+    position: absolute;
+    bottom: 14px; left: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+  }
+  .freeze .dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: #c04030; margin-right: 8px; vertical-align: middle;
+    animation: rec 1.6s ease-in-out infinite;
+  }
+  @keyframes rec { 50% { opacity: 0.3; } }
+  .timecode {
+    position: absolute;
+    top: 14px; right: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .clip-body {
+    padding: 16px 20px 20px;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(248,244,236,0.72);
+  }
+  .clip-body a {
+    color: var(--stop3);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(64,128,184,0.4);
+  }
+  .clip.hand .clip-body a {
+    color: #e09878;
+    border-bottom-color: rgba(224,152,120,0.4);
+  }
+
+  .four-min-bar {
+    display: grid;
+    grid-template-columns: 1fr 48px 1fr;
+    align-items: center;
+    gap: 24px;
+    margin: 24px 0 56px;
+    padding: 20px 28px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(232,228,210,0.1);
+  }
+  .four-min-bar .side {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+  .four-min-bar .side strong {
+    display: block;
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--cream);
+    letter-spacing: 0;
+    text-transform: none;
+    margin-top: 4px;
+  }
+  .four-min-bar .mid {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    font-style: italic;
+    color: var(--amber);
+    text-align: center;
+    line-height: 1;
+  }
+  .four-min-bar .mid .u {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--ink-light);
+    font-style: normal;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Geopolitics strip */
+  .geo-strip {
+    padding: 32px 0;
+    margin-bottom: 56px;
+    border-top: 1px solid rgba(248,244,236,0.1);
+    border-bottom: 1px solid rgba(248,244,236,0.1);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+  }
+  .geo {
+    position: relative;
+    padding-left: 18px;
+  }
+  .geo::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 6px; bottom: 6px;
+    width: 2px;
+    background: var(--stop3);
+    opacity: 0.5;
+  }
+  .geo .when {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--stop3);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .geo h4 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+  .geo p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(248,244,236,0.65);
+  }
+</style>
+</head>
+
+<div class="sharpePage">
+
+<div class="hemisphere-accent"></div>
+
+<nav class="chrome">
+  <div class="chrome-brand"><span class="dot"></span>THE EARNED TOUCH</div>
+  <div class="chrome-nav">
+    <a href="stop-1-sheffield.html">01 Sheffield</a>
+    <span class="sep">/</span>
+    <a href="stop-2-rio.html">02 Rio</a>
+    <span class="sep">/</span>
+    <a href="stop-3-mexicocity.html" class="current">03 Mexico City</a>
+    <span class="sep">/</span>
+    <a href="stop-4-doha.html">04 Doha</a>
+    <span class="sep">/</span>
+    <a href="coordinate-map.html">The Map</a>
+  </div>
+</nav>
+
+<main class="stage">
+
+  <section class="stop-hero">
+    <div class="reveal d1">
+      <div class="eyebrow">Stop 03 · A hand and four minutes</div>
+      <h1>Mexico City,<br>where <em>beauty</em><br>and <em>dishonesty</em><br>arrived together.</h1>
+    </div>
+    <div class="side-meta reveal d2">
+      <div class="coord-stamp"><span class="bracket">[</span> 99°W · 19°N <span class="bracket">]</span></div>
+      <div class="year">1986</div>
+      <div class="mono dim" style="font-size:11px; letter-spacing:3px;">DEEP LEFT SIDE · CENTER HEIGHT</div>
+    </div>
+  </section>
+
+  <section class="locator reveal d2">
+    <div class="locator-panel">
+      <div class="label"><span>WORLD · 3 ARCS COMPLETE</span><span>99°W 19°N</span></div>
+      <svg id="worldMiniSvg" viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="240" fill="#0e2235"/>
+        <g id="worldMiniContours"></g>
+        <line x1="250" y1="0" x2="250" y2="240" stroke="#e8a030" stroke-width="1" stroke-dasharray="4 3" opacity="0.85"/>
+        <line x1="0" y1="120" x2="500" y2="120" stroke="#e8a030" stroke-width="1" stroke-dasharray="4 3" opacity="0.85"/>
+        <!-- pins: Sheffield (250,50), Rio (190,151), Mexico = 250-99*(500/360)=250-138=112, 120-19*(120/90)=95 -->
+        <circle cx="250" cy="50" r="4" fill="#e8a030" opacity="0.5"/>
+        <circle cx="190" cy="151" r="4" fill="#3a8a50" opacity="0.5"/>
+        <circle cx="112" cy="95" r="14" fill="#4080b8" opacity="0.2"/>
+        <circle cx="112" cy="95" r="6" fill="#4080b8"/>
+        <!-- arcs -->
+        <path d="M250 50 Q215 100 190 151" fill="none" stroke="#c8dcc0" stroke-width="1" stroke-dasharray="4 3" opacity="0.35"/>
+        <path d="M190 151 Q140 130 112 95" fill="none" stroke="#c8dcc0" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.6"/>
+        <text x="124" y="92" font-family="'DM Mono', monospace" font-size="9" fill="#4080b8">MEXICO CITY</text>
+        <text x="124" y="103" font-family="'DM Mono', monospace" font-size="8" fill="#306090">1986 · 99°W 19°N</text>
+      </svg>
+    </div>
+
+    <div class="locator-panel">
+      <div class="label"><span>PITCH · DEEP LEFT SIDE</span><span>CENTER HEIGHT</span></div>
+      <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="500" height="300" fill="#1d4a24"/>
+        <rect x="0" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="125" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="250" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="375" y="0" width="62.5" height="300" fill="#224f28" opacity="0.4"/>
+        <rect x="14" y="14" width="472" height="272" fill="none" stroke="#c8dcc0" stroke-width="1.5"/>
+        <line x1="250" y1="14" x2="250" y2="286" stroke="#e8a030" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.85"/>
+        <line x1="14" y1="150" x2="486" y2="150" stroke="#e8a030" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.85"/>
+        <circle cx="250" cy="150" r="42" fill="none" stroke="#c8dcc0" stroke-width="1"/>
+        <circle cx="250" cy="150" r="3" fill="#c8dcc0"/>
+        <rect x="14" y="70" width="72" height="160" fill="none" stroke="#c8dcc0" stroke-width="1"/>
+        <rect x="414" y="70" width="72" height="160" fill="none" stroke="#c8dcc0" stroke-width="1"/>
+        <rect x="6" y="125" width="8" height="50" fill="none" stroke="#c8dcc0" stroke-width="1.2"/>
+        <rect x="486" y="125" width="8" height="50" fill="none" stroke="#c8dcc0" stroke-width="1.2"/>
+        <!-- prior pins (dim) -->
+        <circle cx="250" cy="75" r="4" fill="#e8a030" opacity="0.4"/>
+        <circle cx="194" cy="185" r="4" fill="#3a8a50" opacity="0.5"/>
+        <!-- Mexico City: x=250-99*(472/360)=250-130=120, y=150-19*(272/180)=150-29=121 -->
+        <circle cx="120" cy="121" r="16" fill="#4080b8" opacity="0.2">
+          <animate attributeName="r" values="16;22;16" dur="2.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.2;0.06;0.2" dur="2.2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="120" cy="121" r="7" fill="#4080b8"/>
+        <!-- path -->
+        <path d="M250 75 Q220 130 194 185" fill="none" stroke="#c8dcc0" stroke-width="0.8" stroke-dasharray="4 3" opacity="0.3"/>
+        <path d="M194 185 Q150 150 120 121" fill="none" stroke="#c8dcc0" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>
+        <text x="132" y="118" font-family="'DM Mono', monospace" font-size="9" fill="#4080b8">BALL · STOP 03</text>
+        <text x="132" y="130" font-family="'DM Mono', monospace" font-size="8" fill="#306090">DEEP LEFT · CENTER HEIGHT</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Geopolitics strip -->
+  <div class="sec-head reveal">01 — The weight each foot carried onto the pitch</div>
+  <section class="geo-strip reveal">
+    <div class="geo">
+      <div class="when">April 1982</div>
+      <h4>The Falklands</h4>
+      <p>74 days of war in the South Atlantic. 649 Argentines dead. 255 Britons. A defeat for Argentina the country is still holding when the draw is made for Mexico 1986.</p>
+    </div>
+    <div class="geo">
+      <div class="when">June 22, 1986</div>
+      <h4>The draw produces Argentina &ndash; England</h4>
+      <p>Quarterfinal. Azteca Stadium. 114,580 in attendance. The only time the two nations have met in competition since the war.</p>
+    </div>
+    <div class="geo">
+      <div class="when">51st and 55th minutes</div>
+      <h4>A hand. Then a run.</h4>
+      <p>Two goals, four minutes apart, by the same player. One the referee did not see. One FIFA later votes the Goal of the Century. The ball is the only witness who cannot lie about either.</p>
+    </div>
+  </section>
+
+  <!-- Dual footage -->
+  <div class="sec-head reveal">02 — Dual found-footage card</div>
+  <section class="dual reveal">
+
+    <!-- HAND -->
+    <div class="clip hand">
+      <div class="clip-hd">
+        <div>
+          <div class="tag">Clip A · the hand</div>
+          <div class="title">The goal the referee<br>did not see.</div>
+        </div>
+        <div class="minute">51' · 1–0<br>Quarterfinal</div>
+      </div>
+
+      <div style="position:relative; width:100%; aspect-ratio:16/9;">
+        <iframe
+          src="https://www.youtube.com/embed/F-n7lWyM4Vc"
+          style="position:absolute; inset:0; width:100%; height:100%; border:none;"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          title="Maradona — Hand of God, 1986 World Cup Quarterfinal"
+        ></iframe>
+      </div>
+
+      <div class="clip-body">
+        51st minute. Argentina 1–0 England. Maradona punches the ball into the net with his left fist. The referee is 30 yards away. The linesman says nothing. The goal stands. Maradona calls it the hand of God.
+      </div>
+    </div>
+
+    <!-- GOAL -->
+    <div class="clip">
+      <div class="clip-hd">
+        <div>
+          <div class="tag">Clip B · the run</div>
+          <div class="title">Sixty meters,<br>eleven seconds.</div>
+        </div>
+        <div class="minute">55' · 2–0<br>Quarterfinal</div>
+      </div>
+
+      <div style="position:relative; width:100%; aspect-ratio:16/9;">
+        <iframe
+          src="https://www.youtube.com/embed/1wVho3I0NtU?start=17&end=41"
+          style="position:absolute; inset:0; width:100%; height:100%; border:none;"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          title="Maradona — Goal of the Century, 1986 World Cup Quarterfinal"
+        ></iframe>
+      </div>
+
+      <div class="clip-body">
+        55th minute. Four minutes after the hand. Maradona collects in his own half and runs sixty meters through five English defenders in eleven seconds. FIFA votes it the goal of the century in 2002. The ball that scored both goals is the same ball.
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Four minute bar -->
+  <section class="four-min-bar reveal">
+    <div class="side">Clip A<strong>51st minute · hand</strong></div>
+    <div class="mid">4&apos;<span class="u">apart</span></div>
+    <div class="side" style="text-align:right;">Clip B<strong>55th minute · run</strong></div>
+  </section>
+
+  <!-- Narrative -->
+  <div class="sec-head reveal">03 — Dispatch</div>
+  <section class="narrative reveal">
+    <div class="speaker">Field notes · Estadio Azteca · June 22, 1986</div>
+    <p>There is a kind of quiet a press box produces when it doesn't know what it has just seen. The pencils stop. You hear the crowd below still going, and you are not sure what they are celebrating.</p>
+    <p>The first goal went in at fifty-one minutes. Good angle. I wrote HAND before the referee pointed to the center spot. Then I crossed it out.</p>
+    <p>Four minutes later he took the ball in his own half and ran — without theater, without hesitation. He passed five Englishmen and I counted them and then it was in the net.</p>
+    <p>Sixty meters. Eleven seconds. I went to the bathroom after the match and counted eleven seconds out loud in the mirror. It is not a long time. What he did with it was absurd. I've been doing this for twenty years and I don't have a better word.</p>
+  </section>
+
+  <nav class="foot-nav">
+    <div class="prev">
+      <div class="label">← Previous · Stop 02</div>
+      <a href="stop-2-rio.html" class="title-big">Rio de Janeiro, 1950</a>
+    </div>
+    <div class="center">
+      03 / 04 · Mexico City <br>
+      <a href="coordinate-map.html" style="color:var(--stop3); text-decoration:none; margin-top:6px; display:inline-block;">◎ The Map</a>
+    </div>
+    <div class="next">
+      <div class="label">Next → Stop 04</div>
+      <a href="stop-4-doha.html" class="title-big">Doha, 2022 →</a>
+    </div>
+  </nav>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(async function() {
+  try {
+    const world = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const transform = d3.geoTransform({
+      point: function(lon, lat) {
+        this.stream.point(250 + lon * (500 / 360), 120 - lat * (240 / 180));
+      }
+    });
+    const path = d3.geoPath(transform);
+    const g = d3.select('#worldMiniContours');
+    g.append('path')
+      .datum(topojson.feature(world, world.objects.land))
+      .attr('fill', '#2a4a3a')
+      .attr('opacity', '0.9')
+      .attr('d', path);
+    g.append('path')
+      .datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
+      .attr('fill', 'none')
+      .attr('stroke', '#3d6b50')
+      .attr('stroke-width', '0.4')
+      .attr('d', path);
+  } catch(e) { console.warn('World map CDN unavailable:', e); }
+})();
+</script>
+
+</div>

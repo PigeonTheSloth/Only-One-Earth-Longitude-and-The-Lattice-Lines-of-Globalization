@@ -24,6 +24,7 @@ export function createPoints(scene) {
     const rawDupont = [
         { name: "North PoleM", coords: [1.75913e-18,0.084,4.83316e-18] },
         { name: "Punta Reinas", coords: [-0.0748786,0.0145388,0.0351826] },
+        { name: "Indonesia", coords: [0.0604989,-0.0011571,-0.0582628] },
     ];
 
     const rawGoh = [
@@ -34,9 +35,45 @@ export function createPoints(scene) {
         {name: "Kenya", coords: [0.0711631,-3.45393e-05,0.0446298]}
     ];
 
+    const rawRinaldi = [
+        {name: "Boston", coords: [-0.0482753,0.0565993,0.039013]},
+        {name: "Henan", coords: [0.0499621,0.0478756,-0.0476204]},
+
+    ];
+
+    const rawKryvicky = [
+        {name: "?Wyatt1", coords: [-0.0643382,0.0537071,0.00566904]},
+        {name: "?Wyatt2", coords: [-0.0641112,0.0540155,0.0052994]}
+    ];
+
+    const rawHollenbach = [
+        {name: "?", coords: [-0.0765895,0.0203214,0.0278763]},
+    ];
+   
+    const rawSharpe = [
+        {name: "Sheffield", coords: [0.01729,0.0670854,0.0475038]},
+        {name: "Rio De Janeiro", coords: [-0.0302123,-0.0328214,0.0711757]},
+        {name: "Mexico City", coords: [-0.0779643,0.0273477,0.0151547]},
+        {name: "Doha", coords: [0.0719822,0.0354999,0.0247855]},
     
-    const locationsAll = [rawFarber, rawPhelps, rawLowe, rawDupont, rawGoh, rawAufderheide];
-    const groupNames = ["Farber", "Phelps", "Lowe", "Dupont", "Goh", "Aufderheide"];
+    ];
+    const rawArterburn = [
+        {name: "Madrid", coords: [0.0179455,0.0544608,0.0613839]},
+    ];
+    
+    const rawGlover = [
+        {name: "randomPlace", coords: [0.0179455,0.0544608,0.0613839]},
+
+    ];
+
+    if (rawGlover) {
+        console.log("PointGloverGenerated");
+    }
+
+    const locationsAll = [rawFarber, rawPhelps, rawLowe, rawDupont, rawGoh, rawAufderheide, rawKryvicky, 
+        rawRinaldi, rawHollenbach, rawSharpe, rawArterburn, rawGlover];
+    const groupNames = ["Farber", "Phelps", "Lowe", "Dupont", "Goh", "Aufderheide",
+         "Kryvicky", "Rinaldi", "Hollenbach", "Sharpe", "Arterburn", "Glover"];
 
 //concise function
    const projectData =  locationsAll.map((locationGroup, i) => {
