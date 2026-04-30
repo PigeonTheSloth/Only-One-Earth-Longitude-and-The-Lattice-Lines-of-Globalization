@@ -58,6 +58,12 @@ export function callProjects(name) {
         .then(text => {
             const popup = document.getElementById('halfpPopup');
             popup.innerHTML = text;
+
+             const closeBtn = popup.querySelector('#closeButton');
+            if (closeBtn) {
+                closeBtn.src = 'Icons/close.png';
+            }
+        
             popup.style.display = 'block';
             //do slides behavior if there are slides
             const slides = popup.getElementsByClassName("mySlides");
