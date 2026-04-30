@@ -74,7 +74,7 @@ const loader = new GLTFLoader();
 
 
 //light
-const light = new THREE.DirectionalLight(0xffffff, 1);
+const light = new THREE.DirectionalLight(0x97a5bd, 1);
 
 light.position.set(1,1,1)
 light.target.position.set(0, 0, 0);
