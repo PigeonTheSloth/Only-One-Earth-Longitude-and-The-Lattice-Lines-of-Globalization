@@ -42,8 +42,8 @@ export function createPoints(scene) {
     ];
 
     const rawKryvicky = [
-        {name: "?Wyatt1", coords: [-0.0643382,0.0537071,0.00566904]},
-        {name: "?Wyatt2", coords: [-0.0641112,0.0540155,0.0052994]}
+        {name: "Colorado Location 1", coords: [-0.0643382,0.0537071,0.00566904]},
+        {name: "Colorado Location 2", coords: [-0.0641112,0.0540155,0.0052994]}
     ];
 
     const rawHollenbach = [
@@ -66,14 +66,21 @@ export function createPoints(scene) {
 
     ];
 
+    const rawHoard = [
+        {name: "Boulder", coords: [-0.0641112,0.0540155,0.0052994]},
+        {name: "Antarctica", coords: [1.75913e-18,-0.084,4.83316e-18]},
+        {name: "France", coords: [0.0218588,0.0604245,0.0541024]},
+    
+    ];
+
     if (rawGlover) {
         console.log("PointGloverGenerated");
     }
 
     const locationsAll = [rawFarber, rawPhelps, rawLowe, rawDupont, rawGoh, rawAufderheide, rawKryvicky, 
-        rawRinaldi, rawHollenbach, rawSharpe, rawArterburn, rawGlover];
+        rawRinaldi, rawHollenbach, rawSharpe, rawArterburn, rawGlover, rawHoard];
     const groupNames = ["Farber", "Phelps", "Lowe", "Dupont", "Goh", "Aufderheide",
-         "Kryvicky", "Rinaldi", "Hollenbach", "Sharpe", "Arterburn", "Glover"];
+         "Kryvicky", "Rinaldi", "Hollenbach", "Sharpe", "Arterburn", "Glover", "Hoard"];
 
 //concise function
    const projectData =  locationsAll.map((locationGroup, i) => {

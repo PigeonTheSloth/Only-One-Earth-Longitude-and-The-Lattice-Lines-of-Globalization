@@ -181,7 +181,7 @@ figure {
     color: white;
     top: 15vh;
     left: 70vw;
-    right: 10vw;
+    right: 13vw;
 }
 
 /*projects navbar*/
@@ -193,7 +193,7 @@ figure {
     font-size: 1vw;
     display: flex;
     top: 15vh;
-    left:20vw;
+    left:25vw;
 }
 
 
@@ -223,7 +223,9 @@ figure {
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
-    width: 800px;
+    overflow-y:scroll;
+    max-height: 80vh;
+    width: 40vw;
     height: 500px;
     z-index: 4000;
 

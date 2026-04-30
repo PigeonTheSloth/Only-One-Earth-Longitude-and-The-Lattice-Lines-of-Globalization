@@ -38,8 +38,11 @@ const projectFiles = {
     "Madrid": "./project-materials/Lulu-Arterburn/tourism.html",
 
     
-    "randomPlace": "./project-materials/Gavin-Glover/glover.html"
+    "randomPlace": "./project-materials/Gavin-Glover/glover.html",
 
+    "Boulder": "./project-materials/Samuel-Hoard/poster1.html",
+    "Antarctica": "./project-materials/Samuel-Hoard/ozone.html",
+    "France": "./project-materials/Samuel-Hoard/deBort.html"
 };
 
 export function callProjects(name) {
@@ -63,6 +66,10 @@ export function callProjects(name) {
             if (closeBtn) {
                 closeBtn.src = 'Icons/close.png';
             }
+
+              popup.style.width = 'fit-content';
+        popup.style.height = 'fit-content';
+        popup.style.padding = '20px'; // breathing room around content
         
             popup.style.display = 'block';
             //do slides behavior if there are slides
